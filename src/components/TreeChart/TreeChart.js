@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "chart.js/auto";
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import api from "../../api";
 
 const TreeChart = () => {
@@ -16,27 +16,35 @@ const TreeChart = () => {
           throw Error;
         }
 
-        // const mappedDates = response.data.map(function (days) {
-        //   const dates = new Date(days[1] * 1000).toLocaleDateString("en-GB");
-        //   return dates;
-        // });
+        const getRangeOfDays = [
+          ...new Set(
+            response.map((data) =>
+              new Date(data.date * 1000).toLocaleDateString("en-GB")
+            )
+          ),
+        ];
 
-        // const mappedTrees = response.data.map(function (trees) {
-        //   const numOfTrees =
-        // });
+        const getSumOfTreesPerDay = Array.from(
+          response.reduce(
+            (acc, { date, numOfTree }) =>
+              acc.set(date, (acc.get(date) || 0) + numOfTree),
+            new Map()
+          ),
+          ([date, numOfTree]) => numOfTree
+        );
 
-        setChartData(response.data);
-        setDaysSinceLaunch(response.data);
+        setChartData(getSumOfTreesPerDay);
+        setDaysSinceLaunch(getRangeOfDays);
       } catch (error) {
         console.log(error);
       }
     };
     fetchTreePlantingData();
-  });
+  }, []);
 
   return (
     <div>
-      <Bar
+      <Line
         data={{
           labels: daysSinceLaunch,
           datasets: [
@@ -65,7 +73,18 @@ const TreeChart = () => {
         }}
         width={600}
         height={400}
-        options={{ maintainAspectRatio: false }}
+        options={{
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              min: 0,
+              max: 200,
+              ticks: {
+                // min max not inside here anymore
+              },
+            },
+          },
+        }}
       />
     </div>
   );
