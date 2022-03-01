@@ -7,7 +7,6 @@ const api = {
           numOfTree: trees[0],
           date: trees[1],
         }));
-        console.log(mappedData);
         return mappedData;
       });
   },
