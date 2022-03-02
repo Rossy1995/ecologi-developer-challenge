@@ -24,12 +24,14 @@ const TreeChart = () => {
   useEffect(() => {
     const fetchTreePlantingData = async () => {
       try {
+        // Retrieve mapped response from Ecologi's API
         const response = await api.getTreesPlantedData();
 
         if (response instanceof Error) {
           throw Error;
         }
 
+        // Generate new array containing all dates in dd/mm/yyyy format
         const getRangeOfDays = [
           ...new Set(
             response.map((data) =>
@@ -38,12 +40,14 @@ const TreeChart = () => {
           ),
         ];
 
+        // Sort the array from earliest to latest
         getRangeOfDays.sort(function (a, b) {
           var firstDate = a.split("/").reverse().join(),
             lastDate = b.split("/").reverse().join();
           return firstDate < lastDate ? -1 : firstDate > lastDate ? 1 : 0;
         });
 
+        // Create new array containing total number of trees planted per day
         const getSumOfTreesPerDay = Array.from(
           response.reduce(
             (acc, { date, numOfTree }) =>
@@ -66,6 +70,7 @@ const TreeChart = () => {
     const dates = [...daysSinceLaunch];
     const treeData = [...chartData];
 
+    // Retrieve value from date picker
     let startDateValue = new Date(startDate.current.value).toLocaleDateString(
       "en-GB"
     );
@@ -73,9 +78,11 @@ const TreeChart = () => {
       "en-GB"
     );
 
+    // Retrieve index position based on values in date picker
     const firstDate = dates.indexOf(startDateValue);
     const lastDate = dates.indexOf(endDateValue);
 
+    // Create new array containing the filtered dates and trees planted
     const filterDates = dates.slice(firstDate, lastDate + 1);
     const filterTreeData = treeData.slice(firstDate, lastDate + 1);
 
