@@ -1,6 +1,6 @@
 {
   "name": "ecologi-tree-statistics",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
@@ -18,7 +18,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test:unit": "jest \"^.*(src).*/(.*.spec.js)$\" --env=jsdom",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -37,6 +37,19 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "jest": "^27.5.1",
+    "jest-fetch-mock": "^3.0.3"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "./setupJest.js"
     ]
   }
 }

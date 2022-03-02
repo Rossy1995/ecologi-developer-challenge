@@ -21,9 +21,6 @@ const TreeChart = () => {
   let isFilteredDates =
     filteredDates.length > 0 ? filteredDates : daysSinceLaunch;
 
-  console.log("FILTERED DATA: ", isFilteredData);
-  console.log("FILTERED DATES: ", isFilteredDates);
-
   useEffect(() => {
     const fetchTreePlantingData = async () => {
       try {
@@ -90,6 +87,7 @@ const TreeChart = () => {
     <>
       <div>
         <Line
+          data-testid="tree-planting-data-chart"
           data={{
             labels: isFilteredDates,
             datasets: [
@@ -119,6 +117,7 @@ const TreeChart = () => {
           width={600}
           height={400}
           options={{
+            responsive: true,
             maintainAspectRatio: false,
             scales: {
               y: {
@@ -130,9 +129,11 @@ const TreeChart = () => {
         />
       </div>
       <StyledDiv>
-        <input type="date" ref={startDate} />
-        <input type="date" ref={endDate} />
-        <button onClick={filterChartData}>Filter</button>
+        <input data-testid="start-date-input" type="date" ref={startDate} />
+        <input data-testid="end-date-input" type="date" ref={endDate} />
+        <button data-testid="filter-button" onClick={filterChartData}>
+          Filter
+        </button>
       </StyledDiv>
     </>
   );
